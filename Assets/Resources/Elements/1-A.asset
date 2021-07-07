@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffae452069721454983d45f5d9423475, type: 3}
   m_Name: 1-A
   m_EditorClassIdentifier: 
-  normalSprite: {fileID: 21300000, guid: bbcf42e3261fba449b3638842716ad6a, type: 3}
-  blurredSprite: {fileID: 21300000, guid: c6b51a647b9246a4cab78f032799f7d8, type: 3}
+  material: {fileID: 2100000, guid: 259fc16ba4bda8e44ae14f0109b34a5e, type: 2}
   type: 0

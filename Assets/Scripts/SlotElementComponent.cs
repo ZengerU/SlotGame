@@ -12,7 +12,7 @@ public class SlotElementComponent : MonoBehaviour
         _spriteRenderer = GetComponent<SpriteRenderer>();
         SlotElement[] elements = Resources.LoadAll<SlotElement>("Elements");
         element = elements[transform.GetSiblingIndex()];
-        _spriteRenderer.sprite = element.normalSprite;
+        _spriteRenderer.material = element.material;
         _spriteRenderer.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
         _spriteRenderer.sortingOrder = 1;
     }

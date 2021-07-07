@@ -5,6 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "SlotElement", menuName = "ScriptableObjects/CreateSlotElement", order = 0)]
 public class SlotElement : ScriptableObject
 {
-    public Sprite normalSprite, blurredSprite;
+    public Material material;
     public ElementType type;
 }
