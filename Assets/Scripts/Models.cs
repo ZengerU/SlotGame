@@ -1,5 +1,7 @@
 
+using System;
 using System.Collections.Generic;
+using NaughtyAttributes;
 using UnityEngine.Rendering;
 
 public enum ElementType
@@ -11,23 +13,28 @@ public enum ElementType
     Jackpot
 }
 
+[Serializable]
 public class ResultObject
 {
-    public ElementType[] Elements = new ElementType[3];
-    public int Type = 0;
-    public int Percentage = 13;
-    public int ResultNumber;
+    public List<ElementType> elements = new List<ElementType>()
+    {
+        ElementType.A,
+        ElementType.A,
+        ElementType.A
+    };
+    public int type;
+    public int percentage = 13;
+    public int resultNumber;
 
     public ResultObject()
     {
-        
     }
     public ResultObject(ResultObject other)
     {
-        Elements = other.Elements;
-        Type = other.Type;
-        Percentage = other.Percentage;
-        ResultNumber = other.ResultNumber;
+        elements = other.elements;
+        type = other.type;
+        percentage = other.percentage;
+        resultNumber = other.resultNumber;
     }
 }
 
@@ -38,7 +45,7 @@ public class ResultQueue : Queue<ResultObject>
         string result = string.Empty;
         foreach (ResultObject resultObject in this)
         {
-            result += resultObject.ResultNumber.ToString();
+            result += resultObject.resultNumber.ToString();
         }
 
         return result;

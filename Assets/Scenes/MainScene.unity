@@ -152,6 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 252e92573c9c4a943a7408a0a89025ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  config: {fileID: 11400000, guid: d2c330de18fdc004c888b4812d1e03e4, type: 2}
   leftSlotParent: {fileID: 475314502}
   middleSlotParent: {fileID: 1437997653}
   rightSlotParent: {fileID: 704107326}

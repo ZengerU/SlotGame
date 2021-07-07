@@ -10,6 +10,7 @@ public class GameController : MonoBehaviour
     private const string ResultKey = "results";
     private Dictionary<ElementType, SlotElement> _typeElementMap = new Dictionary<ElementType, SlotElement>();
 
+    [SerializeField] private ResultConfig config;
     private ResultQueue _futureResults = new ResultQueue();
     private ResultObject _nextResult;
     [SerializeField] private Transform leftSlotParent, middleSlotParent, rightSlotParent;
@@ -47,17 +48,17 @@ public class GameController : MonoBehaviour
     {
         foreach (char result in storedResults)
         {
-            _futureResults.Enqueue(ResultLookup[int.Parse(result.ToString())]);
+            _futureResults.Enqueue(config.ResultObjects[int.Parse(result.ToString())]);
         }
     }
 
     private void CreateNewResults()
     {
         ResultObject[] newResults = new ResultObject[100];
-        foreach (ResultObject resultObject in ResultLookup)
+        foreach (ResultObject resultObject in config.ResultObjects)
         {
-            int frequency = 100 / resultObject.Percentage;
-            for (int i = 0; i < resultObject.Percentage; i++)
+            int frequency = 100 / resultObject.percentage;
+            for (int i = 0; i < resultObject.percentage; i++)
             {
                 List<int> possibleNumbers = new List<int>();
                 for (int j = 0; j < frequency; j++)
@@ -94,52 +95,4 @@ public class GameController : MonoBehaviour
         PlayerPrefs.SetString(ResultKey, _futureResults.ToString());
         PlayerPrefs.Save();
     }
-
-    private static readonly List<ResultObject> ResultLookup = new List<ResultObject>()
-    {
-        new ResultObject()
-        {
-            Elements = new[] {ElementType.A, ElementType.Wild, ElementType.Bonus}, ResultNumber = 0
-        },
-        new ResultObject()
-        {
-            Elements = new[] {ElementType.Wild, ElementType.Wild, ElementType.Seven}, ResultNumber = 1
-        },
-        new ResultObject()
-        {
-            Elements = new[] {ElementType.Jackpot, ElementType.Jackpot, ElementType.A}, ResultNumber = 2
-        },
-        new ResultObject()
-        {
-            Elements = new[] {ElementType.Wild, ElementType.Bonus, ElementType.A}, ResultNumber = 3
-        },
-        new ResultObject()
-        {
-            Elements = new[] {ElementType.Bonus, ElementType.A, ElementType.Jackpot}, ResultNumber = 4
-        },
-        new ResultObject()
-        {
-            Elements = new[] {ElementType.A, ElementType.A, ElementType.A}, Type = 1, ResultNumber = 5, Percentage = 9
-        },
-        new ResultObject()
-        {
-            Elements = new[] {ElementType.Bonus, ElementType.Bonus, ElementType.Bonus}, Type = 2, ResultNumber = 6,
-            Percentage = 8
-        },
-        new ResultObject()
-        {
-            Elements = new[] {ElementType.Seven, ElementType.Seven, ElementType.Seven}, Type = 3, ResultNumber = 7,
-            Percentage = 7
-        },
-        new ResultObject()
-        {
-            Elements = new[] {ElementType.Wild, ElementType.Wild, ElementType.Wild}, Type = 4, ResultNumber = 8,
-            Percentage = 6
-        },
-        new ResultObject()
-        {
-            Elements = new[] {ElementType.Jackpot, ElementType.Jackpot, ElementType.Jackpot}, Type = 5,
-            ResultNumber = 9, Percentage = 5
-        },
-    };
 }
