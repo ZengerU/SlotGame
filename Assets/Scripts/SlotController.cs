@@ -6,18 +6,17 @@ using UnityEngine.UI;
 
 public class SlotController : MonoBehaviour
 {
-    private const float SpinMaxSpeed = 3f;
-    public float speed;
-
-    public float followY;
-    public float topY, elementOffset;
-    private float _minY;
+    private const float SpinMaxSpeed = 1f;
+    private float _speed, _minY;
+    private GameController _controller;
+    public float followY, topY, elementOffset;
 
 
     public event Action ToggleBlur;
-    
+
     private void Awake()
     {
+        _controller = FindObjectOfType<GameController>();
         followY = transform.GetChild(transform.childCount - 1).localPosition.y;
         topY = transform.GetChild(0).localPosition.y;
         elementOffset = transform.GetChild(0).localPosition.y - transform.GetChild(1).localPosition.y;
@@ -28,17 +27,30 @@ public class SlotController : MonoBehaviour
     public IEnumerator Spin(float delay, float spinTime, float stopTime, ElementType target)
     {
         float top = elementOffset * 2;
-        float yEndValue = top - (elementOffset * (4 - (int) target));
+        float yEndValue = target switch
+        {
+            ElementType.A => 2.8f,
+            ElementType.Bonus => 5.6f, // or -8.4f
+            ElementType.Seven => -5.6f,
+            ElementType.Wild => -2.8f,
+            ElementType.Jackpot => 0f
+        };
         yield return new WaitForSeconds(delay);
-        DOTween.To(val => speed = val,0, SpinMaxSpeed, 1f).OnComplete(ToggleBlur.Invoke).SetUpdate(UpdateType.Fixed);
+        DOTween.To(val => _speed = val, 0, SpinMaxSpeed, 1f).OnComplete(ToggleBlur.Invoke).SetUpdate(UpdateType.Fixed);
         yield return new WaitForSeconds(spinTime);
         ToggleBlur.Invoke();
-        DOTween.To(val => speed = val,SpinMaxSpeed, 0, stopTime).SetUpdate(UpdateType.Fixed);
+        float distance = followY > yEndValue ? followY - yEndValue : (followY - _minY) + (topY - yEndValue);
+        _speed = distance * .8f / stopTime * Time.fixedDeltaTime;
+        yield return new WaitForSeconds(stopTime);
+        yield return new WaitUntil(() => followY - yEndValue <= .1f);
+        _speed = 0;
+        followY = yEndValue;
+        _controller.SpinnerStopped();
     }
 
     private void FixedUpdate()
     {
-        followY -= speed;
+        followY -= _speed;
         if (followY < _minY)
         {
             followY = topY;
