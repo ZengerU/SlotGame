@@ -14,7 +14,7 @@ public class GameController : MonoBehaviour
     private ResultQueue _futureResults = new ResultQueue();
     private ResultObject _nextResult;
     private List<int[]> _placementPoints = new List<int[]>();
-    [SerializeField] private Transform leftSlotParent, middleSlotParent, rightSlotParent;
+    [SerializeField] private SlotController leftController, middleController, rightController;
 
 
     private void Awake()
@@ -132,6 +132,9 @@ public class GameController : MonoBehaviour
     public void Spin()
     {
         _nextResult = _futureResults.Dequeue();
+        StartCoroutine(leftController.Spin(0, 10, 1f, _nextResult.elements[0]));
+        StartCoroutine(middleController.Spin(0.1f, 10, 1f, _nextResult.elements[1]));
+        StartCoroutine(rightController.Spin(0.2f, 10, 1f, _nextResult.elements[2]));
         SaveFutureResults();
     }
 

@@ -8,8 +8,8 @@ public enum ElementType
 {
     A,
     Bonus,
-    Wild,
     Seven,
+    Wild,
     Jackpot
 }
 
