@@ -20,36 +20,36 @@ MonoBehaviour:
   - elements: 020000000200000003000000
     type: 0
     percentage: 13
-    resultNumber: 0
+    resultNumber: 1
   - elements: 040000000400000000000000
     type: 0
     percentage: 13
-    resultNumber: 0
+    resultNumber: 2
   - elements: 020000000100000000000000
     type: 0
     percentage: 13
-    resultNumber: 0
+    resultNumber: 3
   - elements: 010000000000000004000000
     type: 0
     percentage: 13
-    resultNumber: 0
+    resultNumber: 4
   - elements: 000000000000000000000000
-    type: 0
+    type: 1
     percentage: 9
-    resultNumber: 0
+    resultNumber: 5
   - elements: 010000000100000001000000
-    type: 0
+    type: 2
     percentage: 8
-    resultNumber: 0
+    resultNumber: 6
   - elements: 030000000300000003000000
-    type: 0
+    type: 3
     percentage: 7
-    resultNumber: 0
+    resultNumber: 7
   - elements: 020000000200000002000000
-    type: 0
+    type: 4
     percentage: 6
-    resultNumber: 0
+    resultNumber: 8
   - elements: 040000000400000004000000
-    type: 0
+    type: 5
     percentage: 5
-    resultNumber: 0
+    resultNumber: 9

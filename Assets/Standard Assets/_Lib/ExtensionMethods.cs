@@ -41,6 +41,8 @@ public static class ExtensionMethods
     public static T GetRandomElementFromList<T>(this IEnumerable<T> arr)
     {
         List<T> list = arr.ToList();
+        if (list.Count == 1)
+            return list[0];
         int index = Random.Range(1, list.Count() - 1);
         return list[index];
     }
@@ -64,4 +66,6 @@ public static class ExtensionMethods
     {
         txt.text = Math.Floor(value) == value ? $"{value}" : $"{value:n1}";
     }
+
+    public static Color Invisible => new Color(1, 1, 1, 0);
 }

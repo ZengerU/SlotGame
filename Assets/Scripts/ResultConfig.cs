@@ -8,9 +8,18 @@ using UnityEngine;
 public class ResultConfig : ScriptableObject
 {
     [ValidateInput("EnforceSize", "All result objects must have exactly 3 elements. Percentages must add up to 100.")]
+    [OnValueChanged("SetNumbers")]
     public List<ResultObject> ResultObjects = new List<ResultObject>();
-    
-    
+
+
+    [Button("Validate Result Numbers")]
+    private void SetNumbers()
+    {
+        for (int i = 0;  i < ResultObjects.Count; i++)
+        {
+            ResultObjects[i].resultNumber = i;
+        }
+    }
     private bool EnforceSize()
     {
         int num = 0;
@@ -23,7 +32,7 @@ public class ResultConfig : ScriptableObject
 
             num += resultObject.percentage;
         }
-        
+
         return num == 100;
     }
 }

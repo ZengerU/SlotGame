@@ -13,6 +13,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private ResultConfig config;
     private ResultQueue _futureResults = new ResultQueue();
     private ResultObject _nextResult;
+    private List<int[]> _placementPoints = new List<int[]>();
     [SerializeField] private Transform leftSlotParent, middleSlotParent, rightSlotParent;
 
 
@@ -54,34 +55,78 @@ public class GameController : MonoBehaviour
 
     private void CreateNewResults()
     {
+        GeneratePlacementPoints();
         ResultObject[] newResults = new ResultObject[100];
+        Array.Clear(newResults, 0, newResults.Length);
         foreach (ResultObject resultObject in config.ResultObjects)
         {
-            int frequency = 100 / resultObject.percentage;
             for (int i = 0; i < resultObject.percentage; i++)
             {
-                List<int> possibleNumbers = new List<int>();
-                for (int j = 0; j < frequency; j++)
-                {
-                    if (newResults[i * frequency + j] == null)
-                    {
-                        possibleNumbers.Add(j);
-                    }   
-                }
-                if (possibleNumbers.Count == 0)
-                {
-                    Debug.LogException(new Exception(message:"Found no possible placement for result object!"));
-                }
-
-                newResults[possibleNumbers.GetRandomElementFromList()] = new ResultObject(resultObject);
+                PlaceResult(new ResultObject(resultObject), i, ref newResults);
             }
         }
-
         foreach (ResultObject o in newResults)
         {
             _futureResults.Enqueue(o);
         }
         SaveFutureResults();
+    }
+
+    private void PlaceResult(ResultObject result, int place, ref ResultObject[] newResults)
+    {
+        print($"{result.resultNumber}-{place}");
+        int min = _placementPoints[result.resultNumber][place];
+        int max = place == result.percentage - 1 ? 100 : _placementPoints[result.resultNumber][place + 1];
+        List<int> possibleNumbers = new List<int>();
+        for (int i = min; i < max; i++)
+        {
+            if (newResults[i] == null)
+            {
+                possibleNumbers.Add(i);
+            }
+        }
+        if (possibleNumbers.Count == 0)
+        {
+            int rand = Random.Range(min, max);
+            ResultObject changing = newResults[rand];
+            newResults[rand] = result;
+            PlaceResult(changing, GetResultPlacement(changing, rand),ref newResults);
+        }
+        else
+        {
+            newResults[possibleNumbers.GetRandomElementFromList()] = new ResultObject(result);    
+        }
+    }
+
+    private int GetResultPlacement(ResultObject res, int oldPlacement)
+    {
+        int[] limits = _placementPoints[res.resultNumber];
+        int place = 0;
+        foreach (int limit in limits)
+        {
+            if (limit < oldPlacement)
+            {
+                place++;
+            }
+            else
+            {
+                break;
+            }
+        }
+        return place;
+    }
+    private void GeneratePlacementPoints()
+    {
+        foreach (ResultObject resultObject in config.ResultObjects)
+        {
+            float frequency = 100f / resultObject.percentage;
+            int[] points = new int[resultObject.percentage];
+            for (int i = 0; i < resultObject.percentage; i++)
+            {
+                points[i] = (int)(frequency * i) ;
+            }
+            _placementPoints.Add(points);
+        }
     }
 
     public void Spin()
