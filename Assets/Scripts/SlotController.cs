@@ -57,11 +57,21 @@ public class SlotController : MonoBehaviour
         yield return new WaitForSeconds(delay);
         DOTween.To(val => _speed = val, 0, SpinMaxSpeed, 1f).OnComplete(ToggleBlur.Invoke).SetUpdate(UpdateType.Fixed);
         yield return new WaitForSeconds(spinTime);
+        _speed = 0;
         ToggleBlur.Invoke();
-        float distance = followY > yEndValue ? followY - yEndValue : (followY - _minY) + (topY - yEndValue);
-        _speed = distance * .8f / stopTime * Time.fixedDeltaTime;
+        float stepAmount = Time.fixedDeltaTime / stopTime;
+        if (stopTime > 1)
+        {
+            followY = yEndValue - .01f;
+            _speed = ((followY - _minY) + (topY - yEndValue)) * stepAmount;
+        }
+        else
+        {
+            followY = yEndValue + .5f * elementOffset;
+            _speed = (followY - yEndValue) * stepAmount;
+        }
         yield return new WaitForSeconds(stopTime);
-        yield return new WaitUntil(() => followY - yEndValue <= .1f);
+        yield return new WaitUntil(() => followY - yEndValue < .1f);
         _speed = 0;
         followY = yEndValue;
         _controller.SpinnerStopped();

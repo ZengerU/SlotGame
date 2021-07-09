@@ -23,6 +23,7 @@ public class SlotElementComponent : MonoBehaviour
 
     private void Awake()
     {
+        Reset();
         _controller = transform.parent.GetComponent<SlotController>();
         _controller.ToggleBlur += ToggleBlur;
         _distance = transform.parent.childCount - transform.GetSiblingIndex() - 1;

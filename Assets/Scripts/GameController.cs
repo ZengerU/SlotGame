@@ -92,8 +92,8 @@ public class GameController : MonoBehaviour
     {
         _spinningCount = 3;
         _nextResult = _futureResults.Dequeue();
-        StartCoroutine(leftController.Spin(0, 4, Random.value / 10, _nextResult.elements[0]));
-        StartCoroutine(middleController.Spin(0.1f, 4.1f, Random.value / 10, _nextResult.elements[1]));
+        StartCoroutine(leftController.Spin(0, 4, .08f, _nextResult.elements[0]));
+        StartCoroutine(middleController.Spin(0.1f, 4.1f, .08f, _nextResult.elements[1]));
         StartCoroutine(rightController.Spin(0.2f, 4.5f, _nextResult.rewardType > 0 ? Random.value + 2 : Random.value + 1,
             _nextResult.elements[2]));
         print($"{_nextResult.elements[0]} - {_nextResult.elements[1]} - {_nextResult.elements[2]}");
