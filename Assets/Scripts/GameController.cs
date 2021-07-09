@@ -18,7 +18,7 @@ public class GameController : MonoBehaviour
     private ResultQueue _futureResults = new ResultQueue();
     private ResultObject _nextResult;
     private int _spinningCount;
-    private ResultGenerator _resultGenerator;
+    private ContraintRandomBagSolver _contraintRandomBagSolver;
     private ResultConfig _config;
     
     [SerializeField] private SlotController leftController, middleController, rightController;
@@ -34,8 +34,8 @@ public class GameController : MonoBehaviour
 
     private void Awake()
     {
-        _resultGenerator = new ResultGenerator(100);
-        _config = _resultGenerator.GetConfig();
+        _contraintRandomBagSolver = new ContraintRandomBagSolver(100);
+        _config = _contraintRandomBagSolver.GetConfig();
         LoadOrGenerateResults();
         _prizeEmitter = prizeParticleSystem.emission;
     }
@@ -74,7 +74,7 @@ public class GameController : MonoBehaviour
     private void GenerateResults()
     {
         _futureResults.Clear();
-        foreach (ResultObject o in _resultGenerator.GenerateNewResults())
+        foreach (ResultObject o in _contraintRandomBagSolver.GenerateNewSolution())
         {
             _futureResults.Enqueue(o);
         }

@@ -10,8 +10,8 @@ public class GenerateFutureResultTest
     [TestCase(100)]
     public void GenerateResultTest(int runCount)
     {
-        ResultGenerator generator = new ResultGenerator(100);
-        ResultObject[] resultObjects = generator.GenerateNewResults();
+        ContraintRandomBagSolver generator = new ContraintRandomBagSolver(100);
+        ResultObject[] resultObjects = generator.GenerateNewSolution();
         ResultConfig config = generator.GetConfig();
         List<int[]> placementPoints = generator.GetPlacementPoints();
         foreach (ResultObject resultObject in config.ResultObjects)

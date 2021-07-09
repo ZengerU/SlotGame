@@ -9,7 +9,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 
-public class ResultGenerator
+public class ContraintRandomBagSolver
 {
     private int _size;
     private ResultConfig _config;
@@ -19,7 +19,7 @@ public class ResultGenerator
     /// Creates a result generator.
     /// </summary>
     /// <param name="size">Size of the result to be generated. Values other than 100 have not been tested and are likely to fail.</param>
-    public ResultGenerator(int size)
+    public ContraintRandomBagSolver(int size)
     {
         _size = size;
         _config = Resources.Load<ResultConfig>($"ResultConfig");
@@ -29,7 +29,7 @@ public class ResultGenerator
     /// Creates a result object array with size assigned at object generation.
     /// </summary>
     /// <returns>The generated result object array.</returns>
-    public ResultObject[] GenerateNewResults()
+    public ResultObject[] GenerateNewSolution()
     {
         GeneratePlacementPoints();
         ResultObject[] newResults = new ResultObject[_size];
