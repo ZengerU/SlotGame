@@ -234,15 +234,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 252e92573c9c4a943a7408a0a89025ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  config: {fileID: 11400000, guid: d2c330de18fdc004c888b4812d1e03e4, type: 2}
   leftController: {fileID: 475314504}
   middleController: {fileID: 1437997655}
   rightController: {fileID: 704107328}
   spinButton: {fileID: 1480894637}
+  bigPrizeEmissionAmount: 100
+  mediumPrizeEmissionAmount: 80
+  smallPrizeEmissionAmount: 60
   prizeParticleSystem: {fileID: 1028113754}
-  bigPrizeEmission: 100
-  mediumPrizeEmission: 80
-  smallPrizeEmission: 60
 --- !u!4 &50327742
 Transform:
   m_ObjectHideFlags: 0

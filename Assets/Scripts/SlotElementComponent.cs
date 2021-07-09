@@ -1,31 +1,30 @@
-using System;
+/*
+ * Created By Umut Zenger
+ * https://github.com/ZengerU/SlotGame
+ */
 using UnityEngine;
 
+/// <summary>
+/// Single slot element on a slot column.
+/// </summary>
 public class SlotElementComponent : MonoBehaviour
 {
-    public SlotElement element;
-    private GameObject _normalSprite, _blurSprite;
+    private SlotElement _element;
+    private SpriteRenderer _spriteRenderer;
     private SlotController _controller;
     private int _distance;
 
     private void Reset()
     {
-        element = Resources.Load<SlotElement>($"Elements/{gameObject.name}");
-        transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = element.normal;
-        transform.GetChild(1).GetComponent<SpriteRenderer>().sprite = element.blur;
-        transform.GetChild(1).gameObject.SetActive(false);
+        _element = Resources.Load<SlotElement>($"Elements/{gameObject.name}");
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _spriteRenderer.sprite = _element.normal;
     }
 
     private void Awake()
     {
         _controller = transform.parent.GetComponent<SlotController>();
         _controller.ToggleBlur += ToggleBlur;
-        _normalSprite = transform.GetChild(0).gameObject;
-        _blurSprite = transform.GetChild(1).gameObject;
-    }
-
-    private void Start()
-    {
         _distance = transform.parent.childCount - transform.GetSiblingIndex() - 1;
     }
     private void FixedUpdate()
@@ -33,6 +32,9 @@ public class SlotElementComponent : MonoBehaviour
         PositionSelf();
     }
 
+    /// <summary>
+    /// Positions self every fixed update according to its own slot column controller's followY value.
+    /// </summary>
     private void PositionSelf()
     {
         float targetY = _controller.followY + _distance * _controller.elementOffset;
@@ -43,9 +45,12 @@ public class SlotElementComponent : MonoBehaviour
         transform.localPosition = new Vector3(transform.localPosition.x, targetY, transform.localPosition.z);
     }
 
+    /// <summary>
+    /// Toggles blur on or off.
+    /// </summary>
     private void ToggleBlur()
     {
-        _blurSprite.SetActive(!_blurSprite.activeSelf);
-        _normalSprite.SetActive(!_normalSprite.activeSelf);
+        bool isBlurOn = _spriteRenderer.sprite == _element.blur;
+        _spriteRenderer.sprite = isBlurOn ? _element.normal : _element.blur;
     }
 }

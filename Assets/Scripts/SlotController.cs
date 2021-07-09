@@ -1,18 +1,29 @@
+/*
+ * Created By Umut Zenger
+ * https://github.com/ZengerU/SlotGame
+ */
+
 using System;
 using System.Collections;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Component used on each column of a slot.
+/// </summary>
 public class SlotController : MonoBehaviour
 {
     private const float SpinMaxSpeed = 1f;
     private float _speed, _minY;
     private GameController _controller;
+    [HideInInspector]
     public float followY, topY, elementOffset;
-
-
-    public event Action ToggleBlur;
+    
+    /// <summary>
+    /// Received from elements on this row, toggles blur on or off.
+    /// </summary>
+    public event Action ToggleBlur; 
 
     private void Awake()
     {
@@ -24,6 +35,14 @@ public class SlotController : MonoBehaviour
         GetComponent<VerticalLayoutGroup>().enabled = false;
     }
 
+    /// <summary>
+    /// Spins the column it is on.
+    /// </summary>
+    /// <param name="delay">Time to wait before starting to spin.</param>
+    /// <param name="spinTime">Time between starting to spin and stopping to spin.</param>
+    /// <param name="stopTime">Time it takes to come to a full stop after starting to stop.</param>
+    /// <param name="target">The target value followY should end up on.</param>
+    /// <returns></returns>
     public IEnumerator Spin(float delay, float spinTime, float stopTime, ElementType target)
     {
         float top = elementOffset * 2;
