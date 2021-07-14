@@ -17,13 +17,12 @@ public class SlotController : MonoBehaviour
     private const float SpinMaxSpeed = 1f;
     private float _speed, _minY;
     private GameController _controller;
-    [HideInInspector]
-    public float followY, topY, elementOffset;
-    
+    [HideInInspector] public float followY, topY, elementOffset;
+
     /// <summary>
     /// Received from elements on this row, toggles blur on or off.
     /// </summary>
-    public event Action ToggleBlur; 
+    public event Action ToggleBlur;
 
     private void Awake()
     {
@@ -50,7 +49,7 @@ public class SlotController : MonoBehaviour
         yield return new WaitForSeconds(spinTime);
         _controller.SpinnerReachedAllocatedTime();
     }
-    
+
     public IEnumerator StopSpin(float delay, float stopTime, ElementType target)
     {
         yield return new WaitForSeconds(delay);
@@ -65,18 +64,23 @@ public class SlotController : MonoBehaviour
         _speed = 0; //TODO: ease out
         ToggleBlur.Invoke();
         float stepAmount = Time.fixedDeltaTime / stopTime;
+        Tweener slowDowner = null;
         if (stopTime > 1)
         {
-            followY = yEndValue - .01f;
-            _speed = ((followY - _minY) + (topY - yEndValue)) * stepAmount;
+            float distance = (SpinMaxSpeed / 2) * stopTime;
+            float point = distance % (topY - _minY);
+            followY = point;
+            slowDowner = DOTween.To(val => _speed = val, SpinMaxSpeed, 0.1f, stopTime).SetUpdate(UpdateType.Fixed).SetEase(Ease.Linear);
+            slowDowner.Play();
         }
         else
         {
             followY = yEndValue + elementOffset;
             _speed = (followY - yEndValue) * stepAmount;
         }
-        yield return new WaitForSeconds(stopTime);
-        yield return new WaitUntil(() => followY - yEndValue < .1f);
+        yield return new WaitForSeconds(stopTime -.2f);
+        yield return new WaitUntil(() => followY - yEndValue < .1f && followY > yEndValue);
+        slowDowner?.Kill();
         _speed = 0;
         followY = yEndValue;
         _controller.SpinnerStopped();
