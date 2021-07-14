@@ -101,7 +101,6 @@ public class ContraintRandomBagSolver
             {
                 points[i] = (int) (frequency * i);
             }
-
             _placementPoints.Add(points);
         }
     }

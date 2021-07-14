@@ -43,9 +43,17 @@ public class SlotController : MonoBehaviour
     /// <param name="stopTime">Time it takes to come to a full stop after starting to stop.</param>
     /// <param name="target">The target value followY should end up on.</param>
     /// <returns></returns>
-    public IEnumerator Spin(float delay, float spinTime, float stopTime, ElementType target)
+    public IEnumerator Spin(float delay, float spinTime)
     {
-        float top = elementOffset * 2;
+        yield return new WaitForSeconds(delay);
+        DOTween.To(val => _speed = val, 0, SpinMaxSpeed, 1f).OnComplete(ToggleBlur.Invoke).SetUpdate(UpdateType.Fixed);
+        yield return new WaitForSeconds(spinTime);
+        _controller.SpinnerReachedAllocatedTime();
+    }
+    
+    public IEnumerator StopSpin(float delay, float stopTime, ElementType target)
+    {
+        yield return new WaitForSeconds(delay);
         float yEndValue = target switch
         {
             ElementType.A => 2.8f,
@@ -54,10 +62,7 @@ public class SlotController : MonoBehaviour
             ElementType.Wild => -2.8f,
             ElementType.Jackpot => 0f
         };
-        yield return new WaitForSeconds(delay);
-        DOTween.To(val => _speed = val, 0, SpinMaxSpeed, 1f).OnComplete(ToggleBlur.Invoke).SetUpdate(UpdateType.Fixed);
-        yield return new WaitForSeconds(spinTime);
-        _speed = 0;
+        _speed = 0; //TODO: ease out
         ToggleBlur.Invoke();
         float stepAmount = Time.fixedDeltaTime / stopTime;
         if (stopTime > 1)
@@ -67,7 +72,7 @@ public class SlotController : MonoBehaviour
         }
         else
         {
-            followY = yEndValue + .5f * elementOffset;
+            followY = yEndValue + elementOffset;
             _speed = (followY - yEndValue) * stepAmount;
         }
         yield return new WaitForSeconds(stopTime);
