@@ -156,10 +156,11 @@ MonoBehaviour:
   middleController: {fileID: 1437997655}
   rightController: {fileID: 704107328}
   spinButton: {fileID: 1480894637}
-  stopButton: {fileID: 0}
+  stopButton: {fileID: 527610911}
   bigPrizeEmissionAmount: 100
   mediumPrizeEmissionAmount: 80
   smallPrizeEmissionAmount: 60
+  leftMiddleSlotStopTime: 0.1
   prizeParticleSystem: {fileID: 1028113754}
 --- !u!4 &50327742
 Transform:
