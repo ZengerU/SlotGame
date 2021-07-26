@@ -10,8 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ffae452069721454983d45f5d9423475, type: 3}
-  m_Name: 4-Wild
+  m_Name: 4
   m_EditorClassIdentifier: 
-  normal: {fileID: 21300000, guid: 535472e6c17a3704cb1d9200e542c5dd, type: 3}
-  blur: {fileID: 21300000, guid: afd23e6de3c44674b83c9220167d387f, type: 3}
-  type: 2
+  normal: {fileID: 21300000, guid: 842ad060401c3dc4884a1a540983b89c, type: 3}
+  blur: {fileID: 21300000, guid: c7e5f87fcfbf7e34791473548209810a, type: 3}
